@@ -19,16 +19,16 @@ function getSecretName(id) {
 
 async function keyVaultInitialization() {
     console.log('Key Vault Initialization Started');
-    let credentailPromise;
+    let credentialPromise;
     if (process.env['MSI_ENDPOINT']) {
         console.log('Azure Token Service : MSI');
-        credentailPromise = msRestAzure.loginWithAppServiceMSI({ resource: keyVaultResourceURL });
+        credentialPromise = msRestAzure.loginWithAppServiceMSI({ resource: keyVaultResourceURL });
     } else {
         console.log('Azure Token Service : Interactive Login');
         // Copy the code from console and open the https://microsoft.com/devicelogin url in browser and paste it.
-        credentailPromise = msRestAzure.interactiveLogin({ resource: keyVaultResourceURL });
+        credentialPromise = msRestAzure.interactiveLogin({ resource: keyVaultResourceURL });
     }
-    keyVaultClient = new KeyVault.KeyVaultClient(await credentailPromise);
+    keyVaultClient = new KeyVault.KeyVaultClient(await credentialPromise);
     console.log('Key Vault Client Initialized');
     loadAllSecrets();
 }
